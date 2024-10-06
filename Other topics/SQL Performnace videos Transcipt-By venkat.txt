@@ -1,0 +1,62 @@
+1>How the data is Stored in SQL Server?
+https://www.pragimtech.com/blog/sql-optimization/how-is-data-stored-in-sql-database/
+B trea,Leaf nodes , root nodes ,Intermediate levels.
+Data pages of size 8 kb.
+Read content from below link
+
+-----------------------------------------------------------------------------------------
+
+2>How SQL indexes work?
+https://www.pragimtech.com/blog/sql-optimization/how-do-sql-indexes-work/
+Clustered Index & Non Clustered Index.
+Primary Key is Clustered Index which helps SQL Server Engine to serch data esily.
+
+Index Scan is bad for perfomance. If we have Id in where clause then its Index Seek as Id is primary key.
+If we have where name ="" then its Index Scan which is bad.
+We have to create Non Clustered Index on the table for Name.
+
+CREATE NONCLUSTERED INDEX IX_Employees_Name
+ON [dbo].[Employees] ([Name]
+Row Locataors / Key values Data structure 
+Non Clustered Index -> Key Looup -> Clustered index -> Data rows in leaf nodes sorted by Employee ID
+
+----------------------------------------------------------------------------------------
+
+3>What is heap table | Full table scan
+https://www.pragimtech.com/blog/sql-optimization/what-is-heap-table/
+
+Without a clustered index, the data rows are not guaranteed to be in any specific order in the table. This kind of a table is called a heap
+It may have one or more non-clustered indexes, but if it doesn't have a clustered index, then such a table is called a heap table or just heap
+What is a table scan? Well, as the name implies, a table scan, scans every row in the table to find the row we are looking for
+sp_helpindex Gender
+
+Table scan is not always bad from performance standpoint, especially if you have a table with very a few rows like this Gender table
+Even if there is an index on a very small table like this Gender table, SQL server might still end up using table scan
+another key point to keep in mind here is, if the table has very few rows and even if there is an index to help the query, 
+the database engine might still end up performing a full table scan instead of using the index
+Select * from Gender with (Index(IX_Gender_GenderName))
+where GenderName = 'Male'
+
+4>Key lookup and RID lookup in SQL Server execution plans
+https://www.pragimtech.com/blog/sql-optimization/key-lookup-and-rid-lookup-in-sql%20server/
+
+RID lookup:
+Well, in the non-clustered index we only have Name column and Row ID (RID), but we want the rest of the columns (EmployeeId, Email and Dept) as well from the Employees table.
+ So, SQL Server uses the Row ID to lookup the respective row from the Employees table.
+ Row Locator consists of Name & RID ( becoz only non clustered index is present here).
+ -----------
+ Key lookup:
+ Without a clustered index on the table, the data rows are not guaranteed to be stored in any specific order, but if we create a clusterd index, for example on employee Id column, 
+ the data in the table is physically stored in the sorted order of employee Id
+ Row Locator consists of name and employee id (Non clusterd index is on name and Clustered index on employee id)
+ 
+ 
+Select Name from Employees where Name='ABC 932000'; (Index Seek as only Non clustered index is present on name and we have only name in select list)
+Select * from Employees where Name='ABC 932000' (Index Seek as Non clustered index is present on name as well as RID lookup or key lookup depending on whether
+Clustered index is present or not) If Present Key look up if absent then RID lookup)
+
+Select Id, Name from Employees where Name = 'ABC 932000' (If Clustered index is present and Non clustered index is present on name then only index seek as 
+we have Id . name in select list)
+------------------------------------------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------

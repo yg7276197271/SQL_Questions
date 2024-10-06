@@ -1,0 +1,118 @@
+Sql vs tsql vs plsql
+In this video we will understand the difference between SQL, T-SQL and PL/SQL.
+
+SQL stands for Structured Query Language. So, SQL is a language, specifically, it's a language for relational Databases.
+
+what is sql
+What is a relational database and why do we use it
+what is relational database
+
+In simple terms a relational database is a collection of tables to store data. The tables are usually related to each other by primary and foreign key constraints, 
+hence the term Relational Database Management System, in short RDBMS.
+For example, let's say we want to store our organisation Employees data. We create a database 
+(EmployeesDB - I named it EmployeesDB, but you can give it any meaningful name you want) and in this database we create 3 tables.
+
+Departments - To store the list of all departments
+Gender - To store different genders (Male and Female for example)
+Employees - To store the list of all employees
+
+To create the database itself, tables, relationships and to insert, update, delete and even select data we use SQL - Structured Query Language. 
+So, in simple terms, SQL is a database language, we use it on a Database to create database objects like tables, views, functions etc.
+ We also use it to insert, update, delete and select data.
+
+What is T-SQL and PL/SQL and how is it different SQL
+Well you can think of SQL as a standard database language. It was initially developed by IBM and later ANSI (American National Standards Institute) made it a standard.
+ So, SQL is an ANSI standard and based on it different database vendors like Microsoft, Oracle and many other organisations developed their own database query language.
+
+what is sql with example
+
+Standards are always good, because they allow us to write similar queries across different relational database management systems.
+ Different vendors like Microsoft and Oracle for example, support most of the features of the ANSI SQL standard, however, 
+ these database vendors also include their own non-standard features that extend the standard SQL language.
+
+So the database that is developed by Microsoft is called Microsoft SQL Server or MS SQL Server for short. 
+The language that Microsoft developed to query SQL Server database is called Transact-SQL or T-SQL for short.
+
+sql vs transact sql
+
+Similarly Oracle corporation developed a database management system called Oracle and the language that we use to query oracle database is PL/SQL. 
+By the way, PL stands for Procedural Language.
+So, you can think of SQL as a subset of T-SQL and PL/SQL. A word of caution here, both T-SQL and PL/SQL does not implement 100% of the feature set of standard SQL,
+ but majority of the standard features are implemented.
+ You can see that from the diagram below. Although, not entirely true, you can still think SQL is almost a subset of T-SQL and PL/SQL. 
+ This means if you know T-SQL or PL/SQL, then you already know the standard SQL.
+
+Sql vs tsql vs plsql
+
+The standard SQL is same across all database vendors. This means if you know the standard SQL, then you know how to do most of the basic things on most of the 
+database management systems like SQL Server, Oracle, MySQL, PostgreSQL etc. If you ware wondering what is MySQL and PostgreSQL, well, just like SQL Server and Oracle,
+ they are also relational database management systems.
+
+what is t-sql
+
+Summary
+SQL is the standard database language
+Based on this standard SQL, database vendors like Microsoft, Oracle and many other organizations developed their own database query languages
+TSQL is a proprietary procedural language for working with Microsoft SQL Server database
+Similarly, PL/SQL is a proprietary procedural language for working with Oracle database
+T-SQL and PL/SQL are an extension to standard SQL. 
+This means they have more features and functions than the standard SQL. 
+For example, features such as local variables are added. Similarly many, many built-in functions are added for processing strings, numbers, dates and other types of data.
+They also added the capability to write stored procedures.
+In short these procedural languages like T-SQL and PL/SQL for example, helps us in writing queries easier, quicker and more efficiently.
+
+If you want to learn SQL and T-SQL, please check out our SQL Server tutorial for beginners course. We have covered everything you need, from the basics to advanced SQL concepts.
+
+SQL Scripts
+Create Database EmployeesDB
+Go
+
+Use EmployeesDB
+Go 
+
+Create table Departments
+(
+       Id int primary key identity,
+       [Name] nvarchar(50)
+)
+Go 
+
+Create table Gender
+(
+       Id int primary key identity,
+       Gender nvarchar(20)
+)
+Go 
+
+Create table Employees
+(
+       Id int primary key identity,
+       [Name] nvarchar(50),
+       DeptId int foreign key references Departments(Id),
+       GenderId int foreign key references Gender(Id)
+)
+Go 
+
+Insert into Departments values ('IT')
+Insert into Departments values ('HR')
+Go 
+
+Insert into Gender values ('Male')
+Insert into Gender values ('Female')
+Go 
+
+Insert into Employees ([Name], DeptId, GenderId) values ('Mark', 1, 1)
+Insert into Employees ([Name], DeptId, GenderId) values ('Mary', 1, 2)
+Insert into Employees ([Name], DeptId, GenderId) values ('John', 2, 1)
+Insert into Employees ([Name], DeptId, GenderId) values ('Sara', 2, 2)
+Insert into Employees ([Name], DeptId, GenderId) values ('Steve', 2, 1)
+Go
+
+Select * from Departments
+Select * from Gender
+Select * from Employees 
+
+Select Employees.Name as [Name], Departments.Name as Department, Gender.Gender as Gender
+from Employees
+join Departments on Employees.DeptId = Departments.Id
+join Gender on Employees.GenderId = Gender.Id

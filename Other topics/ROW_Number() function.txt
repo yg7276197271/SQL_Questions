@@ -1,0 +1,30 @@
+Row_Number function
+Introduced in SQL Server 2005
+Returns the sequential number of a row starting at 1
+ORDER BY clause is required
+PARTITION BY clause is optional
+When the data is partitioned, row number is reset to 1 when the partition changes
+Syntax : ROW_NUMBER() OVER (ORDER BY Col1, Col2)
+
+Row_Number function without PARTITION BY : In this example, data is not partitioned, so ROW_NUMBER will provide a consecutive numbering for all the rows in the table 
+based on the order of rows imposed by the ORDER BY clause.
+
+SELECT Name, Gender, Salary,
+        ROW_NUMBER() OVER (ORDER BY Gender) AS RowNumber
+FROM Employees
+
+sql server row_number example
+
+Please note : If ORDER BY clause is not specified you will get the following error
+The function 'ROW_NUMBER' must have an OVER clause with ORDER BY
+
+Row_Number function with PARTITION BY : In this example, data is partitioned by Gender, so ROW_NUMBER will provide a consecutive numbering only for the rows with in a parttion.
+ When the partition changes the row number is reset to 1.
+
+SELECT Name, Gender, Salary,
+        ROW_NUMBER() OVER (PARTITION BY Gender ORDER BY Gender) AS RowNumber
+FROM Employees
+
+sql server row_number example
+
+Use case for Row_Number function : Deleting all duplicate rows except one from a sql server table. 

@@ -1,0 +1,45 @@
+
+--https://csharp-video-tutorials.blogspot.com/2012/08/self-join-in-sql-server-part-14.html
+--Self Join Query:
+--A MANAGER is also an EMPLOYEE. Both the, EMPLOYEE and MANAGER rows, are present in the same table.
+-- Here we are joining tblEmployee with itself using different alias names, E for Employee and M for Manager. 
+--We are using LEFT JOIN, to get the rows with ManagerId NULL.
+-- You can see in the output TODD's record is also retrieved, but the MANAGER is NULL. 
+--If you replace LEFT JOIN with INNER JOIN, you will not get TODD's record.
+
+Create table tblEmployee
+(
+     EmployeeID int primary key,
+     Name nvarchar(50),
+     ManagerID int
+)
+Go
+
+
+Insert into tblEmployee values (1, 'Mike',  3)
+Insert into tblEmployee values (2, 'Rob',  1)
+Insert into tblEmployee values (3, 'Todd',  null)
+Insert into tblEmployee values (4, 'Ben',  1)
+Insert into tblEmployee values (5, 'Sam',  1)
+
+
+
+Select E.Name as Employee, M.Name as Manager
+from tblEmployee E
+Left Join tblEmployee M
+On E.ManagerId = M.EmployeeId
+
+
+--In short, joining a table with itself is called as SELF JOIN. SELF JOIN is not a different type of JOIN. 
+--It can be classified under any type of JOIN - INNER, OUTER or CROSS Joins. The above query is, LEFT OUTER SELF Join.
+
+Inner Self Join tblEmployee table:
+Select E.Name as Employee, M.Name as Manager
+from tblEmployee E
+Inner Join tblEmployee M
+On E.ManagerId = M.EmployeeId
+
+Cross Self Join tblEmployee table:
+Select E.Name as Employee, M.Name as Manager
+from tblEmployee
+Cross Join tblEmployee
